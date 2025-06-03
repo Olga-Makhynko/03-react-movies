@@ -19,7 +19,7 @@ export default function App() {
   const handleSearch = async (query: string) => {
     setLoading(true);
     setError(false);
-    setMovies([]); // очищаємо попередній пошук
+    setMovies([]);
 
     try {
       const results = await fetchMovies(query);
