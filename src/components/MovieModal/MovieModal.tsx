@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
+import ReactDOM from "react-dom";
 import type { Movie } from "../../types/movie";
-import styles from "./MovieModal.module.css";
+import css from "./MovieModal.module.css";
 
 interface MovieModalProps {
   movie: Movie;
@@ -10,7 +11,9 @@ interface MovieModalProps {
 export default function MovieModal({ movie, onClose }: MovieModalProps) {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+      }
     };
 
     document.body.style.overflow = "hidden";
@@ -23,20 +26,22 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
   }, [onClose]);
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) onClose();
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
   };
 
-  return (
+  const modalContent = (
     <div
-      className={styles.backdrop}
+      className={css.backdrop}
       role="dialog"
       aria-modal="true"
       onClick={handleBackdropClick}
     >
-      <div className={styles.modal}>
+      <div className={css.modal}>
         <button
-          className={styles.closeButton}
-          aria-label="Close modal"
+          className={css.closeButton}
+          aria-label="Закрити модальне вікно"
           onClick={onClose}
           type="button"
         >
@@ -49,19 +54,21 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
               : "https://via.placeholder.com/1280x720?text=No+Image"
           }
           alt={movie.title}
-          className={styles.image}
+          className={css.image}
         />
-        <div className={styles.content}>
+        <div className={css.content}>
           <h2>{movie.title}</h2>
           <p>{movie.overview}</p>
           <p>
-            <strong>Release Date:</strong> {movie.release_date}
+            <strong>Дата виходу: </strong> {movie.release_date}
           </p>
           <p>
-            <strong>Rating:</strong> {movie.vote_average}/10
+            <strong>Рейтинг: </strong> {movie.vote_average}/10
           </p>
         </div>
       </div>
     </div>
   );
+
+  return ReactDOM.createPortal(modalContent, document.body);
 }
